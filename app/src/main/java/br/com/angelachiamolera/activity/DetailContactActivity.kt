@@ -36,10 +36,14 @@ class DetailContactActivity : AppCompatActivity() {
         val btnDelete = findViewById<TextView>(R.id.button_delete_contact)
 
         btnDelete.setOnClickListener(View.OnClickListener {
-            if (ContactDAO.delete(position)) {
-                Toast.makeText(this, "Seu contato foi deletado com sucesso.", Toast.LENGTH_LONG).show()
-                finish()
-            }
+            ContactDAO.deleteContactFromRoom(contact!!, object : ContactDAO.onResult<Boolean> {
+                override fun onSuccess(result: Boolean) {
+                    if(result) {
+                        toastMsg()
+                        finish()
+                    }
+                }
+            })
         })
 
         val btnEdit = findViewById<TextView>(R.id.button_edit_contact)
@@ -61,8 +65,12 @@ class DetailContactActivity : AppCompatActivity() {
         }
     }
 
+    private fun toastMsg() {
+        Toast.makeText(this, "Seu contato foi deletado com sucesso.", Toast.LENGTH_LONG).show()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.getItemId() === android.R.id.home) {
+        if (item.itemId == android.R.id.home) {
             finish()
         }
 

@@ -2,6 +2,7 @@ package br.com.angelachiamolera.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -42,11 +43,27 @@ class EditContactActivity : AppCompatActivity() {
                 contact.cellphone = cellphoneContact.text.toString()
                 contact.email = emailContact.text.toString()
 
-                if(ContactDAO.editContact(contact, position)) {
-                    Toast.makeText(this, "Seu contato foi editado com sucesso.", Toast.LENGTH_LONG).show()
-                    finish()
-                }
+                ContactDAO.editContactFromRoom(contact, object : ContactDAO.onResult<Boolean> {
+                    override fun onSuccess(result: Boolean) {
+                        if(result) {
+                            toastMsg()
+                            finish()
+                        }
+                    }
+                })
             }
         }
+    }
+
+    private fun toastMsg() {
+        Toast.makeText(this, "Seu contato foi editado com sucesso.", Toast.LENGTH_LONG).show()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            finish()
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 }

@@ -6,15 +6,18 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.ListView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import br.com.angelachiamolera.R
+import br.com.angelachiamolera.model.Contact
 import br.com.angelachiamolera.model.ContactDAO
 import br.com.angelachiamolera.view.ContactsAdapter
 
 class ListContactsActivity : AppCompatActivity() {
 
     private lateinit var listView : ListView
+    var listContacts : List<Contact>? = listOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,18 +32,11 @@ class ListContactsActivity : AppCompatActivity() {
         titleToolbar.setText("LISTA DE CONTATOS")
 
         listView = findViewById<ListView>(R.id.list_contacts)
-        var listContacts = ContactDAO.getList()
 
-
-        listContacts?.let {
-            val adapter = ContactsAdapter(this, listContacts)
-            listView.adapter = adapter
-        }
+        callLoadListContact()
 
         listView.setOnItemClickListener { _, _, position, _ ->
-            // 1
-            val contact = listContacts?.get(position)
-
+            val contact = listContacts!![position]
             val intent = Intent(this, DetailContactActivity::class.java)
             intent.putExtra("Contato", contact)
             intent.putExtra("Position", listContacts!![position])
@@ -48,14 +44,25 @@ class ListContactsActivity : AppCompatActivity() {
         }
     }
 
+    private fun callLoadListContact() {
+        val progressBar = findViewById<ProgressBar>(R.id.progress_contacts)
+        ContactDAO.getListContactFromRoom(object : ContactDAO.onResult<List<Contact>> {
+            override fun onSuccess(result: List<Contact>) {
+                listContacts = result
+                progressBar.visibility = View.GONE
+                setAdapter(result)
+            }
+        })
+    }
+
+    private fun setAdapter(listContacts: List<Contact>) {
+        val adapter = ContactsAdapter(this, listContacts)
+        listView.adapter = adapter
+    }
+
     override fun onResume() {
         super.onResume()
-        var listContacts = ContactDAO.getList()
-
-        listContacts?.let {
-            val adapter = ContactsAdapter(this, listContacts)
-            listView.adapter = adapter
-        }
+        callLoadListContact()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

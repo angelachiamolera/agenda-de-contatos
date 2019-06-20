@@ -35,11 +35,13 @@ class AddContactActivity : AppCompatActivity() {
 
         btnAddContact.setOnClickListener(View.OnClickListener {
 
-            var name = nameContact.text.toString()
-            var cellphone = cellphoneContact.text.toString()
-            var email = emailContact.text.toString()
+            val name = nameContact.text.toString()
+            val cellphone = cellphoneContact.text.toString()
+            val email = emailContact.text.toString()
 
-            var contact = Contact(name, email = email, cellphone = cellphone)
+            val contact = Contact(nome = name, email = email, cellphone = cellphone)
+
+            ContactDAO.saveContactRoom(contact)
 
             ContactDAO.getInstance()
             if(ContactDAO.saveContact(contact)) {
@@ -50,7 +52,7 @@ class AddContactActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.getItemId() === android.R.id.home) {
+        if (item.itemId == android.R.id.home) {
             finish()
         }
 

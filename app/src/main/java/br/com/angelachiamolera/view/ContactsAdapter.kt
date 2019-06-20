@@ -13,7 +13,7 @@ import android.view.LayoutInflater
 
 
 
-class ContactsAdapter(var context: Context, var listContact: MutableList<Contact>) : BaseAdapter() {
+class ContactsAdapter(var context: Context, var listContact: List<Contact>) : BaseAdapter() {
 
     @SuppressLint("ViewHolder")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
