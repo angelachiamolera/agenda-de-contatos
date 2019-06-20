@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">AgendaAngela</string>
+    <string name="contacts">AGENDA DE CONTATOS</string>
+    <string name="text_vazio"/>
+</resources>
