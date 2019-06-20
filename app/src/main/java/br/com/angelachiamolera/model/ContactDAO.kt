@@ -3,7 +3,7 @@ package br.com.angelachiamolera.model
 class ContactDAO {
 
     companion object {
-        var listContacts : MutableList<Contact>? = null
+        private var listContacts : MutableList<Contact>? = null
 
         fun getInstance() : MutableList<Contact> {
 
@@ -20,6 +20,22 @@ class ContactDAO {
 
         fun getContactByPosition(index: Int) : Contact {
             return listContacts!!.get(index)
+        }
+
+        fun getList() : MutableList<Contact>? {
+            return listContacts
+        }
+
+        fun delete(position: Int) : Boolean {
+            listContacts!!.removeAt(position)
+            return true
+        }
+
+        fun editContact(contact: Contact, position: Int): Boolean {
+            if(delete(position)) {
+                listContacts!!.add(position, contact)
+            }
+            return true
         }
     }
 }

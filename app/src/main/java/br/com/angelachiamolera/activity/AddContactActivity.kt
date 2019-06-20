@@ -23,13 +23,15 @@ class AddContactActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
+        var titleToolbar = findViewById<TextView>(R.id.tv_title_toolbar)
+        titleToolbar.setText("ADICIONAR CONTATO")
 
         var nameContact = findViewById<TextView>(R.id.et_name_contact)
         var cellphoneContact = findViewById<TextView>(R.id.et_cellphone_contact)
         var emailContact = findViewById<TextView>(R.id.et_email_contact)
 
 
-        var btnAddContact = findViewById<Button>(R.id.button_add_contact)
+        val btnAddContact = findViewById<Button>(R.id.button_add_contact)
 
         btnAddContact.setOnClickListener(View.OnClickListener {
 
